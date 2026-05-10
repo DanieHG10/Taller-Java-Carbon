@@ -1,4 +1,4 @@
-# Proyecto: Huella de Carbono en Java
+# Huella de Carbono en Java
 
 ## 1. Descripción general
 
@@ -103,7 +103,96 @@ carbon-footprint-java
 
 El siguiente diagrama muestra las clases principales del proyecto y sus relaciones:
 
-![Diagrama UML del proyecto](docs/diagrama_uml.png)
+```mermaid
+classDiagram
+    direction BT
+
+    class CarbonFootprint {
+        <<interface>>
+        +getCarbonFootprint() double
+        +getIdentification() String
+    }
+
+    class CarbonAsset {
+        <<abstract>>
+        -String id
+        -String name
+        +CarbonAsset(String, String)
+        +getId() String
+        +getName() String
+        +getIdentification() String
+        +getType() String*
+    }
+
+    class Building {
+        -double squareMeters
+        -double annualKwh
+        -double annualNaturalGasTherms
+        -String city
+        +getCarbonFootprint() double
+        +getType() String
+        +toTextLine() String
+        +calculateElectricityFootprint() double
+        +calculateGasFootprint() double
+    }
+
+    class Car {
+        -String brand
+        -String model
+        -double annualMiles
+        -double milesPerGallon
+        +getCarbonFootprint() double
+        +getType() String
+        +toTextLine() String
+        +calculateAnnualGallonsConsumed() double
+    }
+
+    class Bicycle {
+        -String frameMaterial
+        -double annualKilometers
+        -double manufacturingKgCo2e
+        -int usefulLifeYears
+        +getCarbonFootprint() double
+        +getType() String
+        +toTextLine() String
+        +isLowCarbonTransport() boolean
+    }
+
+    class CarbonAssetFactory {
+        <<utility>>
+        +fromTextLine(String) CarbonAsset$
+        -buildBuilding(String[]) Building$
+        -buildCar(String[]) Car$
+        -buildBicycle(String[]) Bicycle$
+        -validateLength(String[], int, String) void$
+    }
+
+    class CarbonAssetRepository {
+        +save(List~CarbonAsset~, Path) void
+        +load(Path) List~CarbonAsset~
+    }
+
+    class App {
+        +main(String[])$ void
+    }
+
+    %% Relaciones de Herencia e Implementación
+    CarbonAsset ..|> CarbonFootprint : implements
+    Building --|> CarbonAsset : extends
+    Car --|> CarbonAsset : extends
+    Bicycle --|> CarbonAsset : extends
+    
+    %% Relaciones de la Fábrica y Repositorio
+    CarbonAssetFactory ..> CarbonAsset : creates
+    CarbonAssetFactory ..> Building : instantiates
+    CarbonAssetFactory ..> Car : instantiates
+    CarbonAssetFactory ..> Bicycle : instantiates
+    CarbonAssetRepository ..> CarbonAssetFactory : uses
+    
+    %% Relación de uso en la App
+    App ..> CarbonAssetRepository : uses
+    App ..> CarbonFootprint : usa ArrayList~CarbonFootprint~
+```
 
 Relaciones principales:
 
@@ -164,37 +253,7 @@ Para separar los datos se usa el carácter `|`. Después, la clase `CarbonAssetF
 
 ---
 
-## 8. Cómo ejecutar el programa
-
-### Opción 1: con Maven
-
-Desde la carpeta principal del proyecto:
-
-```bash
-mvn compile
-mvn exec:java -Dexec.mainClass="edu.carbonfootprint.App"
-```
-
-### Opción 2: sin Maven
-
-También se puede compilar y ejecutar directamente con `javac`:
-
-```bash
-javac -d out $(find src/main/java -name "*.java")
-java -cp out edu.carbonfootprint.App
-```
-
-En Windows PowerShell se puede usar:
-
-```powershell
-Get-ChildItem -Recurse src/main/java -Filter *.java | ForEach-Object { $_.FullName } > sources.txt
-javac -d out @sources.txt
-java -cp out edu.carbonfootprint.App
-```
-
----
-
-## 9. Pruebas unitarias
+## 8. Pruebas unitarias
 
 Las pruebas se encuentran en la carpeta:
 
@@ -216,21 +275,9 @@ Para ejecutar todas las pruebas con Maven:
 ```bash
 mvn test
 ```
-
-Para ejecutar una clase específica:
-
-```bash
-mvn -Dtest=BuildingTest test
-mvn -Dtest=CarTest test
-mvn -Dtest=BicycleTest test
-mvn -Dtest=CarbonAssetRepositoryTest test
-```
-
-En Visual Studio Code también se pueden ejecutar desde el panel **Testing**, usando la extensión **Extension Pack for Java**.
-
 ---
 
-## 10. Resultado esperado
+## 9. Resultado esperado
 
 Al ejecutar el programa se obtiene un reporte similar al siguiente:
 
@@ -250,7 +297,7 @@ BICYCLE [id=BI-001, name=Bicicleta Urbana] -> 16.00 kg CO2e/anio
 
 ---
 
-## 11. Explicación de la solución
+## 10. Explicación de la solución
 
 Primero se analizaron los objetos del caso de estudio: edificio, carro y bicicleta. Cada uno tiene características propias y una forma diferente de calcular la huella de carbono. Luego se diseñó una interfaz común llamada `CarbonFootprint`, para obligar a que todos los objetos tengan el método `getCarbonFootprint()`.
 
@@ -264,4 +311,4 @@ Finalmente, se agregaron pruebas unitarias con JUnit para comprobar que los cál
 
 ## 12. Conclusión
 
-El proyecto permite evidenciar la aplicación de los conceptos principales de la programación orientada a objetos. La solución usa herencia, interfaces, polimorfismo, encapsulamiento y separación por paquetes. Además, incluye persistencia en archivo de texto y pruebas unitarias para validar el comportamiento de las clases principales.
+Se permite evidenciar la aplicación de los conceptos principales de la programación orientada a objetos. La solución usa herencia, interfaces, polimorfismo, encapsulamiento y separación por paquetes. Además, incluye persistencia en archivo de texto y pruebas unitarias para validar el comportamiento de las clases principales.
