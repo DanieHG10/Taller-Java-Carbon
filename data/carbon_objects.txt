@@ -1,0 +1,3 @@
+BUILDING|B-001|Edificio Administrativo|1200.0|18000.0|320.0|Bogota
+CAR|C-001|Vehiculo Familiar|Ford|Explorer|10500.0|32.0
+BICYCLE|BI-001|Bicicleta Urbana|Aluminio|2800.0|160.0|10
