@@ -308,6 +308,14 @@ Para el manejo de archivos se creó `CarbonAssetRepository`, separando esta resp
 Finalmente, se agregaron pruebas unitarias con JUnit para comprobar que los cálculos principales funcionan y que los objetos pueden guardarse y leerse correctamente desde archivo.
 
 ---
+## 11. Link del video
+
+Se adjunta el link del video en youtube con la explicación.
+
+https://youtu.be/ZbJ-g-kllbI
+
+---
+
 
 ## 12. Conclusión
 
