@@ -316,7 +316,13 @@ https://youtu.be/ZbJ-g-kllbI
 
 ---
 
+## 12. Link del repositorio
 
-## 12. Conclusión
+Se adjunta el link del repositorio en GitHub.
+
+https://github.com/DanieHG10/Taller-Java-Carbon
+
+---
+## 13. Conclusión
 
 Se permite evidenciar la aplicación de los conceptos principales de la programación orientada a objetos. La solución usa herencia, interfaces, polimorfismo, encapsulamiento y separación por paquetes. Además, incluye persistencia en archivo de texto y pruebas unitarias para validar el comportamiento de las clases principales.
